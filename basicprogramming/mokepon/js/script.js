@@ -79,10 +79,15 @@ function restartGame(){
     enemyPetAttack = null;
     document.getElementById('pet-name').innerHTML = '';
     document.getElementById('enemy-pet-name').innerHTML = '';
-    messages = document.getElementById('messages');
-    while(messages.firstChild){
-        messages.removeChild(messages.firstChild);};
-    delete messages;
+    attackMessage1 = document.getElementById('pet-attack-messages');
+    attackMessage2 = document.getElementById('enemy-pet-attack-messages');
+    //attackMessages = document.getElementsByClassName('attack-messages');
+    while(attackMessage1.firstChild || attackMessage2.firstChild ){
+        attackMessage1.removeChild(attackMessage1.firstChild);;
+        attackMessage2.removeChild(attackMessage2.firstChild);};
+    delete attackMessage1;
+    delete attackMessage2;
+    
     
     attackButtonTackle = document.getElementById('btn-attack-tackle');
     attackButtonTackle.disabled = true;
@@ -107,7 +112,7 @@ function attackNotMissed(){
 };
 function attackTackle(){
     if (petLives == 0 && enemyPetLives ==0){
-        gameFinished(tie=true)
+        //gameFinished(tie=true)
     } else if(petLives > 0 && enemyPetLives > 0){
         if(attackNotMissed()){
             enemyPetLives = enemyPetLives - 1;
@@ -120,7 +125,7 @@ function attackTackle(){
 
 function attackFire(){
     if (petLives == 0 && enemyPetLives ==0){
-        gameFinished(tie=true)
+        //gameFinished(tie=true)
     } else if (petLives > 0 && enemyPetLives > 0 ){
         //is pet able to do this attack?
         if(petName == 'ratigueya' || petName == 'langostelvis' || petName == 'pydos'){
@@ -136,13 +141,13 @@ function attackFire(){
 
 function attackWater(){
     if (petLives == 0 && enemyPetLives ==0){
-        gameFinished(tie=true)
+        //gameFinished(tie=true)
     } else if (petLives > 0 && enemyPetLives > 0 ){
         //is pet able to do this attack?
         if(petName == 'hipodoge' || petName == 'langostelvis' || petName == 'tucapalma'){
             if(attackNotMissed()){
                 enemyPetLives = enemyPetLives -1;
-                enemyPetAttack = 'water💧';
+                petAttack = 'water💧';
                 updatePetsLives();
             } else{petAttack = '...missed!';};
             enemyAttack();
@@ -152,7 +157,7 @@ function attackWater(){
 
 function attackPlant(){
     if (petLives == 0 && enemyPetLives ==0){
-        gameFinished(tie=true)
+        //gameFinished(tie=true)
     } else if (petLives > 0 && enemyPetLives > 0 ){
         //is pet able to do this attack?
         if(petName == 'capipepo' || petName == 'tucapalma' || petName == 'pydos'){
@@ -287,7 +292,9 @@ function enemyAttack(){
         }
     }
     if(petLives == 0 || enemyPetLives == 0){
-        gameFinished();
+        if(petLives == 0 && enemyPetLives == 0){
+            gameFinished(tie=true);
+        } else{gameFinished();}
         //TO-DO: with the lines above, I think parts of the pet attack's functions can be errased bc the game is finished here.. but too lazy right now to do it :P 
     }
 };
@@ -353,11 +360,12 @@ function createMessage(){
 //Alert that someone has been defeted
 function gameFinished(tie=false){
     restartButton.style.display = 'block';
+    
     if(tie){
-        alert("Both pets can not move... it has been a tie😯");
+        setTimeout(function(){ alert("Both pets can not move... it has been a tie😯");}, 600 );
     } else if (petLives == 0){
-        alert("You have lost 😵");
-    } else{alert("Enemy pet have been defeated 🏆")};
+        setTimeout(function(){alert("You have lost 😵");} , 600) ;
+    } else{setTimeout(function(){ alert("Enemy pet have been defeated 🏆");} , 600); };
 
 };
 
