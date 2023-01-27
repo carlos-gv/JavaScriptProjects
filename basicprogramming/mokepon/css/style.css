@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap'); 
+html {
+background-color: #77aa77;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 2 1'%3E%3Cdefs%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='0' x2='0' y1='0' y2='1'%3E%3Cstop offset='0' stop-color='%2377aa77'/%3E%3Cstop offset='1' stop-color='%234fd'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23cf8' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23cf8' stop-opacity='1'/%3E%3C/linearGradient%3E%3ClinearGradient id='c' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='2' y2='2'%3E%3Cstop offset='0' stop-color='%23cf8' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23cf8' stop-opacity='1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='0' y='0' fill='url(%23a)' width='2' height='1'/%3E%3Cg fill-opacity='0.5'%3E%3Cpolygon fill='url(%23b)' points='0 1 0 0 2 0'/%3E%3Cpolygon fill='url(%23c)' points='2 1 2 0 0 0'/%3E%3C/g%3E%3C/svg%3E");
+background-attachment: fixed;
+background-size: cover;
+
+}
+
+body{
+   font-family: 'Poppins', sans-serif;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}
+
+section{
+   display: flex;
+}
+
+.cards{
+   display: flex;
+   flex-direction: row;
+   gap: 10px;
+}
+
+.centered{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}
+
+#choose-pet{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}
+
+#choose-attack{
+   flex-direction: column;
+   align-items: center;
+}
+
+#messages{
+   flex-direction: column;
+   align-items: center;
+}
+
+.attack-messages{
+   display: grid;
+   grid-template-columns: 100px 100px;
+}
+
+.info-messages{
+   display: grid;
+   grid-template-columns: 100px 100px;
+   background-color: #b96d92;
+   border-radius: 5px;
+   column-gap: 10px;
+   margin-top: 10px;
+}
+
+.attack-messages{
+   display: grid;
+   grid-template-columns: 100px 100px;
+   border-radius: 5px;
+   column-gap: 10px;
+}
+
+.mokepon-card{
+   /*width: 100px;*/
+   /*height: 50px;*/
+   background-color: aquamarine;
+   box-sizing: border-box;
+   padding: 10px;
+   border-radius: 20px;
+}
+
+.mokepon-card img{
+   width: 80px;
+}
+
+input:checked + label {
+   background-color: lightblue;
+   border-color: gray;
+   border-width: 2px;
+   border-style: solid;
+}
+
+.btn-attack{
+   display: grid;
+   /*column-gap: 10px;*/
+   /*row-gap: 10px;*/
+   /*padding: 15px;*/
+   margin-top: 10px;
+   border-radius: 15px; 
+   border: none;
+   background-color: #F3ECB0;
+}
+
+
+.attack-message-box{
+   background-color: #1C82AD;
+   border-radius: 8px;
+   display: grid;
+   grid-auto-flow: column;
+   grid-column-gap: 10px;
+   grid-row-gap: 10px;
+   justify-content: center;
+}
+
+#btn-pet{
+   width: 180px;
+   height: 50px;
+   border-radius: 20px;
+   background: transparent;
+   border: 2px solid white;
+   font-family: 'Poppins', sans-serif;
+   margin-top: 20px;
+
+}
+
+@media(max-width: 678px){
+  .cards{
+      flex-direction: column;
+  } 
+  .btn-attack{
+      display: flex;
+      flex-direction: column;
+      margin-top: 10px;
+  }
+}
+
+input{
+   display: none;
+}
+

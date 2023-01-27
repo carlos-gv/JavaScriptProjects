@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MOKEPON</title>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    </head>
+    <body>
+        <h1>MOKEPON! 🔥💧🌱</h1>
+        <!--Setting main pet-->
+        <section id="choose-pet" >
+            <h2>Choose a pet:</h2>
+
+            <div class="cards">
+            <input type="radio" name="petChoise" id="hipodoge" />
+            <label class="mokepon-card" for="hipodoge">
+                <p>Hipodoge</p>
+                <img src="./images/mokepons_mokepon_hipodoge_attack.png" alt="hipodoge" />
+            </label> <!--water-->
+            <input type="radio" name="petChoise" id="capipepo" />
+            <label class="mokepon-card" for="capipepo">
+                <p>Capipepo</p>
+                <img src="./images/mokepons_mokepon_capipepo_attack.png" alt="capipepo" />
+            </label> <!--plant-->
+            <input type="radio" name="petChoise" id="ratigueya" />
+            <label class="mokepon-card" for="ratigueya">
+                <p>Ratigueya</p>
+                <img src="./images/mokepons_mokepon_ratigueya_attack.png" alt="ratigueya" />
+            </label> <!--fire-->
+            <input type="radio" name="petChoise" id="langostelvis" />
+            <label class="mokepon-card" for="langostelvis">
+                <p>Langostelvis</p>
+                <img src="./images/mokepons_mokepon_langostelvis_attack.png" alt="langostelvis" />
+            </label> <!--water, fire-->
+            <input type="radio" name="petChoise" id="tucapalma" />
+            <label class="mokepon-card" for="tucapalma">
+                <p>Tucapalma</p>
+                <img src="./images/mokepons_mokepon_tucapalma_attack.png" alt="tucapalma" />
+            </label> <!--water, plant-->
+            <input type="radio" name="petChoise" id="pydos" />
+            <label class="mokepon-card" for="pydos">
+                <p>Pydos</p>
+                <img src="./images/mokepons_mokepon_pydos_attack.png" alt="pydos" />
+            </label> <!--plant, fire-->
+
+            </div>
+
+            <button id="btn-pet">Choose</button>
+        </section>
+
+        <section id="choose-attack" style="display:none">
+        <h2>Choose an attack!</h2>
+
+                <div>
+                    <!--Attacking-->
+                    <button class="btn-attack" id="btn-attack-tackle">Tackle💥</button>
+                    <button class="btn-attack" id="btn-attack-fire">Fire🔥</button>
+                    <button class="btn-attack" id="btn-attack-water">Water💧</button>
+                    <button class="btn-attack" id="btn-attack-plant">Plant🌱</button>
+                </div>
+                <div>
+                    <section id="messages">
+                        <div class="info-messages" >
+                            <div>
+                                <p>Your pet <span id="pet-name"></span>, lives: <span id="pet-lives">❤❤❤</span></p>
+                                <p>Pet attacks!</p>
+                            </div>
+                            <div>
+                                <p>Enemy's pet <span id="enemy-pet-name"></span>, lives: <span id="enemy-pet-lives">❤❤❤</span> </p>
+                                <p>Enemy attacks!</p>
+                            </div>
+                        </div>
+                        <div class="attack-messages">
+                            <div id="pet-attack-messages">
+                            </div>
+                            <div id="enemy-pet-attack-messages">
+                            </div>
+                        </div>
+                            
+                </section>
+
+                <!--Restart game-->
+                <button id="btn-restart">Restart</button>
+            </div>
+
+
+        </section>
+
+
+
+        <script src="./js/script.js"></script>
+    </body>
+</html>

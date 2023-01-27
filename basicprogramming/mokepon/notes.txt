@@ -1,0 +1,6 @@
+#to see multiple properties in css
+https://cssreference.io
+#to search hex color code
+https://htmlcolorcodes.com/es/
+#to get matching colors
+https://colorhunt.co/
