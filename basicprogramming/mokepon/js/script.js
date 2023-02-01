@@ -6,6 +6,8 @@ let enemyPetLives;
 let hearts = ['😵','❤','❤❤','❤❤❤'];
 let petName;
 let enemyPetName;
+let mokepons = [];
+let mokeponOption;
 let petAttack;
 let enemyPetAttack;
 let attackButtonTackle;
@@ -13,33 +15,70 @@ let attackButtonFire;
 let attackButtonWater;
 let attackButtonPlant;
 
-let sectionChooseAttack = document.getElementById('choose-attack');
-let sectionChooseAPet = document.getElementById('choose-pet');
-let restartButton = document.getElementById('btn-restart');
-let petButtonPlayer = document.getElementById('btn-pet');
-let petAttackMessages = document.getElementById('pet-attack-messages');
-let enemyPetAttackMessages = document.getElementById('enemy-pet-attack-messages');
+const sectionChooseAttack = document.getElementById('choose-attack');
+const sectionChooseAPet = document.getElementById('choose-pet');
+const restartButton = document.getElementById('btn-restart');
+const petButtonPlayer = document.getElementById('btn-pet');
+const petAttackMessages = document.getElementById('pet-attack-messages');
+const enemyPetAttackMessages = document.getElementById('enemy-pet-attack-messages');
+const cardsConteiner = document.getElementById('cards-conteiner')
 
 class Mokepon{
-    constructor(name, foto, live){
+    constructor(name, foto, lives){
         this.name = name;
+        this.mayusName = toUpperCaseFirst(name);
+        //TO-DO: to be more consistent: either deprecate all 'toUpperCaseFirst' outside the constructor, or 'mayusName' attribute.
         this.foto = foto;
-        this.live = live;
+        this.lives = lives;
+        this.attacks = [];
+//TO-DO: To be able to use this.name, change all the asignations of the variable "petName"
     }
 }
 
-let hipodoge = new Mokepon('Hipodoge', "./images/mokepons_mokepon_hipodoge_attack.png", hearts[3]);
-let capipepo = new Mokepon('Capipepo', "./images/mokepons_mokepon_capipepo_attack.png", hearts[3]);
-let ratigueya = new Mokepon('Ratigueya', "./images/mokepons_mokepon_ratigueya_attack.png", hearts[3]);
-let langostelvis = new Mokepon('Langostelvis', "./images/mokepons_mokepon_langostelvis_attack.png", hearts[3]);
-let tucapalma = new Mokepon('Tucapalma', "./images/mokepons_mokepon_tucapalma_attack.png", hearts[3]);
-let pydos = new Mokepon('Pydos', "./images/mokepons_mokepon_pydos_attack.png", hearts[3]);
 
+let hipodoge = new Mokepon('hipodoge', "./images/mokepons_mokepon_hipodoge_attack.png", hearts[3]);
+let capipepo = new Mokepon('capipepo', "./images/mokepons_mokepon_capipepo_attack.png", hearts[3]);
+let ratigueya = new Mokepon('ratigueya', "./images/mokepons_mokepon_ratigueya_attack.png", hearts[3]);
+let langostelvis = new Mokepon('langostelvis', "./images/mokepons_mokepon_langostelvis_attack.png", hearts[3]);
+let tucapalma = new Mokepon('tucapalma', "./images/mokepons_mokepon_tucapalma_attack.png", hearts[3]);
+let pydos = new Mokepon('pydos', "./images/mokepons_mokepon_pydos_attack.png", hearts[3]);
+
+hipodoge.attacks.push(
+    {name: 'Tackle💥', id: 'btn-tackle'},
+    {name: 'Water💧', id: 'btn-water'}
+);
+
+capipepo.attacks.push(
+    {name: 'Tackle💥', id: 'btn-tackle'},
+    {name: 'Plant🌱', id: 'btn-plant'}
+);
+ratigueya.attacks.push(
+    {name: 'Tackle💥', id: 'btn-tackle'},
+    {name: 'Fire🔥', id: 'btn-fire'}
+);
+langostelvis.attacks.push(
+    {name: 'Tackle💥', id: 'btn-tackle'},
+    {name: 'Fire🔥', id: 'btn-fire'},
+    {name: 'Water💧', id: 'btn-water'}
+);
+tucapalma.attacks.push(
+    {name: 'Tackle💥', id: 'btn-tackle'},
+    {name: 'Water💧', id: 'btn-water'},
+    {name: 'Plant🌱', id: 'btn-plant'}
+);
+pydos.attacks.push(
+    {name: 'Tackle💥', id: 'btn-tackle'},
+    {name: 'Fire🔥', id: 'btn-fire'},
+    {name: 'Plant🌱', id: 'btn-plant'}
+);
+
+mokepons.push(hipodoge,capipepo,ratigueya,langostelvis,tucapalma,pydos);
 
 function toUpperCaseFirst(name){
     return (name.charAt(0).toUpperCase()+name.slice(1));
 };
 
+//Select a random number in between, excluding the boundaries. Ex: random(1,3) =2. 1 and 3 are excluded.
 function random(max, min){
     return Math.floor(Math.random()*(max-min+1)+min);
 };
@@ -52,6 +91,18 @@ function beginGame(){
 
     sectionChooseAttack.style.display = 'none';
     sectionChooseAPet.style.display = 'flex';
+
+    mokepons.forEach((mokepon) => {
+        mokeponOption =`
+            <input type="radio" name="petChoise" id=${mokepon.name} />
+            <label class="mokepon-card" for=${mokepon.name}>
+                <p>${mokepon.mayusName}</p>
+                <img src=${mokepon.foto} alt=${mokepon.name} />
+            </label>
+        `
+        cardsConteiner.innerHTML += mokeponOption;
+
+    });
 
     restartButton.style.display = 'none';
     restartButton.addEventListener('click', restartGame);
@@ -77,6 +128,7 @@ function restartGame(){
     enemyPetName = null;
     petAttack = null;
     enemyPetAttack = null;
+    cardsConteiner.innerHTML = '';
     document.getElementById('pet-name').innerHTML = '';
     document.getElementById('enemy-pet-name').innerHTML = '';
     attackMessage1 = document.getElementById('pet-attack-messages');
@@ -303,8 +355,6 @@ function enemyAttack(){
 function selectPet(){
     let notSelected = true;
 
-    sectionChooseAttack.style.display = 'flex';
-    sectionChooseAPet.style.display = 'none';
 
     attackButtonTackle = document.getElementById('btn-attack-tackle');
     attackButtonTackle.disabled = false;
@@ -315,9 +365,11 @@ function selectPet(){
     attackButtonPlant = document.getElementById('btn-attack-plant');
     attackButtonPlant.disabled = false;
     if (!petChosen){
-        petChosen = true;
         for(let i in petsList){
             if(document.getElementById(petsList[i]).checked){
+                petChosen = true;
+                sectionChooseAttack.style.display = 'flex';
+                sectionChooseAPet.style.display = 'none';
                 petName = petsList[i];
                 document.getElementById('pet-name').innerHTML = toUpperCaseFirst(petName);
                 notSelected = false;
