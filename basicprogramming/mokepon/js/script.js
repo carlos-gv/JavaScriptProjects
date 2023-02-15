@@ -1,19 +1,5 @@
 //There is a mini hack in the game.. lets see if you can find it ;)
 
-let petChosen = false;
-const hearts = ['😵','❤','❤❤','❤❤❤'];
-let pet;
-let enemyPet;
-let petAttacks = [];
-let enemyPetAttacks = [];
-let mokeponOption;
-let petAttack;
-let enemyPetAttack;
-let attackButtonTackle;
-let attackButtonFire;
-let attackButtonWater;
-let attackButtonPlant;
-
 const sectionChooseAttack = document.getElementById('choose-attack');
 const sectionChooseAPet = document.getElementById('choose-pet');
 const restartButton = document.getElementById('btn-restart');
@@ -21,17 +7,67 @@ const petButtonPlayer = document.getElementById('btn-pet');
 const petAttackMessages = document.getElementById('pet-attack-messages');
 const attackButtons = document.getElementById('attack-btns');
 const enemyPetAttackMessages = document.getElementById('enemy-pet-attack-messages');
-const cardsConteiner = document.getElementById('cards-conteiner')
+const cardsConteiner = document.getElementById('cards-conteiner');
+const sectionViewMap = document.getElementById('view-map');
+const map = document.getElementById('map');
+const hearts = ['😵','❤','❤❤','❤❤❤'];
+const numberOfEnemys = 3;
+
+let petChosen = false;
+let pet;
+let enemyPet;
+let enemyPetList = [];
+//let petAttacks = [];
+//let enemyPetAttacks = [];
+let mokeponOption;
+//current attacks for quick access.
+let petAttack;
+let enemyPetAttack;
+
+let attackButtonTackle;
+let attackButtonFire;
+let attackButtonWater;
+let attackButtonPlant;
+let canvas = map.getContext("2d");
+let interval;
+let mapBackground = new Image();
+mapBackground.src = 'images/mokemap.png';
+let windowWidth = window.innerWidth;
+
+let scaledMapWidth = windowWidth<800 ? windowWidth -40 : 800 -40;
+let scaledMapHeight = (scaledMapWidth*600)/800;
+map.width = scaledMapWidth;
+map.height = scaledMapHeight;
+
 
 class Mokepon{
-    constructor(name, foto, lives, attacks=[]){
+    constructor(name, foto, lives, attacks=[],x=70, y=80){
         this.name = name;
         this.mayusName = toUpperCaseFirst(name);
         //TO-DO: to be more consistent: either deprecate all 'toUpperCaseFirst' outside the constructor, or 'mayusName' attribute.
         this.foto = foto;
         this.lives = lives;
         this.attacks = attacks;
+        this.x = x;
+        this.y = y;
+        this.width = 80;
+        this.height = 80;
+        this.mapPhoto = new Image();
+        this.mapPhoto.src = foto;
+        this.velX = 0;
+        this.velY = 0;
+
     }
+
+    drawPetInMap(){
+        canvas.drawImage(
+        this.mapPhoto,
+        this.x,
+        this.y,
+        this.width,
+        this.height
+        );
+    };
 }
 
 
@@ -71,7 +107,7 @@ pydos.attacks.push(
     {name: 'Plant🌱', id: 'btn-attack-plant'}
 );
 
-//Base to create a coppied pet and enemy.
+//Base to create a coppied this and enemy.
 const petsList = [hipodoge,capipepo,ratigueya,langostelvis,tucapalma,pydos];
 
 function toUpperCaseFirst(name){
@@ -86,9 +122,11 @@ function random(max, min){
 function beginGame(){
     
     petChosen = false;
+    enemyPet = null;
 
     sectionChooseAttack.style.display = 'none';
     sectionChooseAPet.style.display = 'flex';
+    sectionViewMap.style.display = 'none';
 
     petsList.forEach((mokepon) => {
         mokeponOption =`
@@ -111,8 +149,8 @@ function beginGame(){
 function restartGame(){
     petChosen = false;
 
-    document.getElementById('pet-lives').innerHTML = hearts[pet.lives];
-    document.getElementById('enemy-pet-lives').innerHTML = hearts[enemyPet.lives];
+    document.getElementById('pet-lives').innerHTML = hearts[3];
+    document.getElementById('enemy-pet-lives').innerHTML = hearts[3];
     pet = null;
     enemyPet = null;
     petAttack = null;
@@ -147,18 +185,15 @@ function attackNotMissed(){
     return notMissed
 };
 function attackTackle(){
-        if(pet.lives > 0 && enemyPet.lives > 0){
         if(attackNotMissed()){
             enemyPet.lives = enemyPet.lives - 1;
             petAttack = 'tackle💥';
             updatePetsLives();
         } else{petAttack = '...missed!';};
         enemyAttack();
-    } else{gameFinished();};
 };
 
 function attackFire(){
-        if (pet.lives > 0 && enemyPet.lives > 0 ){
         //is pet able to do this attack?
         if(pet.name == 'ratigueya' || pet.name == 'langostelvis' || pet.name == 'pydos'){
             if(attackNotMissed()){
@@ -167,12 +202,10 @@ function attackFire(){
                 updatePetsLives();
             } else{petAttack = '...missed!';};
             enemyAttack();
-        } else {alert(toUpperCaseFirst(pet.name) + ' can not attack with fire! choose another attack.')}
-    } else {gameFinished();};
+        } else {alert(toUpperCaseFirst(pet.name) + ' can not attack width fire! choose another attack.')}
 };
 
 function attackWater(){
-        if (pet.lives > 0 && enemyPet.lives > 0 ){
         //is pet able to do this attack?
         if(pet.name == 'hipodoge' || pet.name == 'langostelvis' || pet.name == 'tucapalma'){
             if(attackNotMissed()){
@@ -181,12 +214,10 @@ function attackWater(){
                 updatePetsLives();
             } else{petAttack = '...missed!';};
             enemyAttack();
-        } else {alert(toUpperCaseFirst(pet.name) + ' can not attack with water! choose another attack.')}
-    } else {gameFinished();};
+        } else {alert(toUpperCaseFirst(pet.name) + ' can not attack width water! choose another attack.')}
 };
 
 function attackPlant(){
-        if (pet.lives > 0 && enemyPet.lives > 0 ){
         //is pet able to do this attack?
         if(pet.name == 'capipepo' || pet.name == 'tucapalma' || pet.name == 'pydos'){
             if(attackNotMissed()){
@@ -195,8 +226,8 @@ function attackPlant(){
                 updatePetsLives();
             } else{petAttack = '...missed!';};
             enemyAttack();
-        } else {alert(toUpperCaseFirst(pet.name) + ' can not attack with plant! choose another attack.')}
-    } else {gameFinished();};
+        } else {alert(toUpperCaseFirst(pet.name) + ' can not attack width plant! choose another attack.')}
+        
 };
 
 // from 1 to 3, choose an attack for the enemy.
@@ -324,7 +355,7 @@ function enemyAttack(){
         if(pet.lives == 0 && enemyPet.lives == 0){
             gameFinished(tie=true);
         } else{gameFinished();}
-        //TO-DO: with the lines above, I think parts of the pet attack's functions can be errased bc the game is finished here.. but too lazy right now to do it :P 
+        //TO-DO: width the lines above, I think parts of the pet attack's functions can be errased bc the game is finished here.. but too lazy right now to do it :P 
     }
 };
 
@@ -336,9 +367,10 @@ function selectPet(){
         for(let i in petsList){
             if(document.getElementById(petsList[i].name).checked){
                 petChosen = true;
-                sectionChooseAttack.style.display = 'flex';
                 sectionChooseAPet.style.display = 'none';
+
                 pet = new Mokepon(petsList[i].name, petsList[i].foto, petsList[i].lives,petsList[i].attacks);
+                //this create html attacks buttons and give them a click event.
                 pet.attacks.forEach((attack)=>{
                     let button = document.createElement("button")
                     button.innerHTML = attack.name; 
@@ -349,10 +381,13 @@ function selectPet(){
                     eval("attackButton"+attackName+ "=button");
                     eval("attackButton"+attackName+".addEventListener('click',"+"attack"+attackName+")");
                 })
+
+                sectionViewMap.style.display = 'flex';
+                updateMap();
+
                 document.getElementById('pet-name').innerHTML = toUpperCaseFirst(pet.name);
                 notSelected = false;
                 selectEnemyPet();
-                document.getElementById('enemy-pet-name').innerHTML = toUpperCaseFirst(enemyPet.name);
             } 
         }
         if(notSelected){
@@ -363,9 +398,14 @@ function selectPet(){
 
 //Randomly choose enemy pet after player selected pet
 function selectEnemyPet(){
-    let randomNum = random(-1,petsList.length);
-    enemyPet = new Mokepon(petsList[randomNum].name,petsList[randomNum].foto,petsList[randomNum].lives, petsList[randomNum].attacks);
-    document.getElementById('enemy-pet-name').innerHTML = toUpperCaseFirst(enemyPet.name);
+    for (let i = 0; i < numberOfEnemys; i++){
+        let randomNum = random(-1,petsList.length);
+        let randomX = random(map.width/4, map.width -70);
+        let randomY = random(map.height/4, map.height -70);
+        enemyPet = new Mokepon(petsList[randomNum].name,petsList[randomNum].foto,petsList[randomNum].lives, petsList[randomNum].attacks, x=randomX, y=randomY);
+        enemyPetList[i] = enemyPet;
+    };
+    //document.getElementById('enemy-pet-name').innerHTML = toUpperCaseFirst(enemyPet.name);
 };
 
 function createMessage(){
@@ -383,16 +423,120 @@ function createMessage(){
 
 };
 
+function blockAttackButtons(){
+    if (attackButtonTackle){attackButtonTackle.disabled = "disabled"};
+    if (attackButtonFire){attackButtonFire.disabled = "disabled"};
+    if (attackButtonWater){attackButtonWater.disabled = "disabled"};
+    if (attackButtonPlant){attackButtonPlant.disabled = "disabled"};
+};
+
 //Alert that someone has been defeted
 function gameFinished(tie=false){
     restartButton.style.display = 'block';
+    blockAttackButtons();
     
     if(tie){
         setTimeout(function(){ alert("Both pets can not move... it has been a tie😯");}, 600 );
-    } else if (pet.lives == 0){
+    } else if (pet.lives == 0 && enemyPet.lives !== 0){
         setTimeout(function(){alert("You have lost 😵");} , 600) ;
     } else{setTimeout(function(){ alert("Enemy pet have been defeated 🏆");} , 600); };
 
+};
+
+function drawCanvas(){
+    pet.x = pet.x + pet.velX;
+    pet.y = pet.y + pet.velY;
+    canvas.clearRect(0,0, map.width, map.height);
+    canvas.drawImage(
+        mapBackground,
+        0,
+        0,
+        map.width,
+        map.height
+    );
+    pet.drawPetInMap();
+
+    for(let i = 0; i < numberOfEnemys; i++){
+        enemyPetList[i].drawPetInMap();
+    };
+    
+    if(pet.velY !== 0 || pet.velX !== 0){
+        for(let i = 0; i < numberOfEnemys; i++){
+        checkColission(enemyPetList[i]);
+        };
+    };
+};
+
+function movePetRight(){
+    pet.velX = 5;
+};
+function movePetLeft(){
+    pet.velX = -5;
+};
+
+function movePetUp(){
+    pet.velY = -5;
+};
+function movePetDown(){
+    pet.velY = 5;
+};
+
+function stopMove(){
+    pet.velY = 0;
+    pet.velX = 0;
+};
+
+function keyPressed(event){
+    switch(event.key){
+        case('ArrowUp'):
+            movePetUp();
+            break;
+        case('ArrowDown'):
+            movePetDown();
+            break;
+        case('ArrowLeft'):
+            movePetLeft();
+            break;
+        case('ArrowRight'):
+            movePetRight();
+            break;
+        default:
+            break;
+    };
+};
+
+function updateMap(){
+
+    interval = setInterval(drawCanvas,50);
+    window.addEventListener('keydown', keyPressed);
+    window.addEventListener('keyup', stopMove);
+};
+
+function checkColission(enemy){
+    const leftEnemy = enemy.x;
+    const rightEnemy = enemy.x + enemy.width;
+    const upEnemy = enemy.y;
+    const downEnemy = enemy.y + enemy.height;
+
+    const leftPet = pet.x;
+    const rightPet = pet.x + pet.width;
+    const upPet = pet.y;
+    const downPet = pet.y + pet.height;
+
+    if(
+        downPet < upEnemy ||
+        upPet > downEnemy ||
+        rightPet < leftEnemy ||
+        leftPet > rightEnemy
+    ){return;};
+
+    pet.velX = 0;
+    pet.velY = 0;
+    enemyPet = enemy;
+    clearInterval(interval);
+    document.getElementById('enemy-pet-name').innerHTML = toUpperCaseFirst(enemyPet.name);
+    sectionViewMap.style.display = "none";
+    sectionChooseAttack.style.display = "flex";
 };
 
 window.addEventListener('load', beginGame);

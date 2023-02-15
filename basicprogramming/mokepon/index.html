@@ -4,48 +4,32 @@
         <title>MOKEPON</title>
         <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="./css/style.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <h1>MOKEPON! 🔥💧🌱</h1>
         <!--Setting main pet-->
         <section id="choose-pet" >
+            <h1>MOKEPON! 🔥💧🌱</h1>
             <h2>Choose a pet:</h2>
 
             <div id="cards-conteiner" class="cards">
-            <!--<input type="radio" name="petChoise" id="hipodoge" />-->
-            <!--<label class="mokepon-card" for="hipodoge">-->
-                <!--<p>Hipodoge</p>-->
-                <!--<img src="./images/mokepons_mokepon_hipodoge_attack.png" alt="hipodoge" />-->
-            <!--</label> [>water<]-->
-            <!--<input type="radio" name="petChoise" id="capipepo" />-->
-            <!--<label class="mokepon-card" for="capipepo">-->
-                <!--<p>Capipepo</p>-->
-                <!--<img src="./images/mokepons_mokepon_capipepo_attack.png" alt="capipepo" />-->
-            <!--</label> [>plant<]-->
-            <!--<input type="radio" name="petChoise" id="ratigueya" />-->
-            <!--<label class="mokepon-card" for="ratigueya">-->
-                <!--<p>Ratigueya</p>-->
-                <!--<img src="./images/mokepons_mokepon_ratigueya_attack.png" alt="ratigueya" />-->
-            <!--</label> [>fire<]-->
-            <!--<input type="radio" name="petChoise" id="langostelvis" />-->
-            <!--<label class="mokepon-card" for="langostelvis">-->
-                <!--<p>Langostelvis</p>-->
-                <!--<img src="./images/mokepons_mokepon_langostelvis_attack.png" alt="langostelvis" />-->
-            <!--</label> [>water, fire<]-->
-            <!--<input type="radio" name="petChoise" id="tucapalma" />-->
-            <!--<label class="mokepon-card" for="tucapalma">-->
-                <!--<p>Tucapalma</p>-->
-                <!--<img src="./images/mokepons_mokepon_tucapalma_attack.png" alt="tucapalma" />-->
-            <!--</label> [>water, plant<]-->
-            <!--<input type="radio" name="petChoise" id="pydos" />-->
-            <!--<label class="mokepon-card" for="pydos">-->
-                <!--<p>Pydos</p>-->
-                <!--<img src="./images/mokepons_mokepon_pydos_attack.png" alt="pydos" />-->
-            <!--</label> [>plant, fire<]-->
 
             </div>
 
             <button id="btn-pet">Choose</button>
+        </section>
+
+        <section id="view-map">
+            <h2>Explore the map!</h2>
+            <canvas id="map" ></canvas>
+            <div style="display:grid">
+                <button onmouseup="stopMove()" onmousedown="movePetRight()" class="btn-movement" id="btn-movement-right">➡</button>
+                <button onmouseup="stopMove()" onmousedown="movePetLeft()" class="btn-movement" id="btn-movement-left">⬅</button>
+                <button onmouseup="stopMove()" onmousedown="movePetUp()" class="btn-movement" id="btn-movement-up">⬆</button>
+                <button onmouseup="stopMove()" onmousedown="movePetDown()" class="btn-movement" id="btn-movement-down">⬇</button>
+            </div>
+
+
         </section>
 
         <section id="choose-attack" style="display:none">
